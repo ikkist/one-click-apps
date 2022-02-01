@@ -1,0 +1,84 @@
+captainVersion: 4
+services:
+    $$cap_appname:
+        image: bitnami/pgbouncer:$$cap_pgbouncer_version
+        restart: always
+        environment:
+            POSTGRESQL_USERNAME: $$cap_database_user
+            POSTGRESQL_PASSWORD: $$cap_database_password
+            POSTGRESQL_HOST: $$cap_database_host
+            POSTGRESQL_PORT: $$cap_database_port
+            POSTGRESQL_DATABASE: $$cap_database_name
+            PGBOUNCER_PORT: $$cap_pgbouncer_port
+            PGBOUNCER_BIND_ADDRESS: $$cap_pgbouncer_bind_address
+            PGBOUNCER_EXTR_ARGS: $$cap_pgbouncer_extra_args
+            PGBOUNCER_DATABASE: $$cap_pgbouncer_database
+            PGBOUNCER_MAX_CLIENT_CONN: $$cap_pgbouncer_max_client_conn
+        caproverExtra:
+            containerHttpPort: '3567'
+caproverOneClickApp:
+    variables:
+        - defaultValue: 1.16.1
+          description: Check out their dockerhub for their latest version https://hub.docker.com/r/bitnami/pgbouncer/tags
+          id: $$cap_pgbouncer_version
+          label: PgBouncer Version
+          validRegex: /.{1,}/
+        - id: $$cap_database_user
+          label: Postgres user
+          description: 'PostgreSQL Username'
+          validRegex: /.{1,}/
+        - id: $$cap_database_password
+          label: Postgres password
+          description: 'PostgreSQL Password'
+          validRegex: /.{1,}/
+        - id: $$cap_database_host
+          label: Postgres host
+          description: 'PostgreSQL Host Name'
+          validRegex: /.{1,}/
+        - id: $$cap_database_port
+          label: Postgres port
+          description: 'PostgreSQL Port Number'
+          defaultValue: 5432
+          validRegex: /.{1,}/
+        - id: $$cap_database_name
+          label: Postgres database name
+          description: 'PostgreSQL Database Name'
+          defaultValue: 'postgres'
+          validRegex: /.{1,}/
+        - id: $$cap_pgbouncer_port
+          defaultValue: 6432
+          description: 'PgBouncer port. Default: 6432'
+          validRegex: /[0-9]{1,}/
+        - id: $$cap_pgbouncer_bind_address
+          defaultValue: '0.0.0.0'
+          description: 'PgBouncer bind address. Default: 0.0.0.0'
+          validRegex: /.{1,}/
+        - id: $$cap_pgbouncer_extra_args
+          description: |-
+              In case you want to add extra flags to the PgBouncer command, use the PGBOUNCER_EXTRA_ARGS variable. Example:
+              PGBOUNCER_EXTRA_ARGS="--verbose"
+        - id: $$cap_pgbouncer_database
+          defaultValue: 'postgres'
+          description: |-
+              PgBouncer exposed database. Default: postgres
+          validRegex: /.{1,}/
+        - id: $$cap_pgbouncer_pool_mode
+          description: |-
+              PgBouncer pool mode. Allowed values: session, transaction and statement. Default: session.
+          defaultValue: 'session'
+          validRegex: /^(session|transaction|statement)/
+        - id: $$cap_pgbouncer_max_client_conn
+          defaultValue: 120
+          description: |-
+              PgBouncer maximum number of client connections allowed. Default: 120.
+    instructions:
+        start: |-
+            Lightweight connection pooler for PostgreSQL
+        end: PgBouncer is deployed and available as $$cap_appname.
+    displayName: PgBouncer
+    isOfficial: true
+    description: |-
+        PgBouncer is a connection pooler for PostgreSQL.
+        It reduces performance overhead by rotating client connections to PostgreSQL databases.
+        It supports PostgreSQL databases located on different hosts.
+    documentation: See https://www.pgbouncer.org/
