@@ -1,0 +1,53 @@
+captainVersion: 4
+services:
+    $$cap_appname:
+        image: supertokens/supertokens-postgresql:$$cap_supertokens_version
+        restart: always
+        environment:
+            POSTGRESQL_USER: $$cap_database_user
+            POSTGRESQL_PASSWORD: $$cap_database_password
+            POSTGRESQL_HOST: $$cap_database_host
+            POSTGRESQL_PORT: $$cap_database_port
+            POSTGRESQL_DATABASE_NAME: $$cap_database_name
+            API_KEY: $$cap_api_key
+        caproverExtra:
+            containerHttpPort: '3567'
+caproverOneClickApp:
+    variables:
+        - defaultValue: 3.8
+          description: Check out their dockerhub for their latest version https://hub.docker.com/r/supertokens/supertokens-postgresql
+          id: $$cap_supertokens_version
+          label: SuperTokens Version
+          validRegex: /.{1,}/
+        - id: $$cap_api_key
+          label: API Key for SuperTokens
+          description: 'format is key1,key2,key3'
+        - id: $$cap_database_user
+          label: Postgres user
+          description: 'PostgreSQL Username'
+          validRegex: /.{1,}/
+        - id: $$cap_database_password
+          label: Postgres password
+          description: 'PostgreSQL Password'
+          validRegex: /.{1,}/
+        - id: $$cap_database_host
+          label: Postgres host
+          description: 'PostgreSQL Host Name'
+          validRegex: /.{1,}/
+        - id: $$cap_database_port
+          label: Postgres port
+          description: 'PostgreSQL Port Number'
+          defaultValue: 5432
+          validRegex: /.{1,}/
+        - id: $$cap_database_name
+          label: Postgres database name
+          description: 'PostgreSQL Database Name'
+          defaultValue: 'supertokens'
+          validRegex: /.{1,}/
+    instructions:
+        start: SuperTokens is an open source authentication solution.
+        end: SuperTokens is deployed and available as $$cap_appname.
+    displayName: SuperTokens - No Database
+    isOfficial: true
+    description: SuperTokens is an open core alternative to proprietary login providers like Auth0 or AWS Cognito.
+    documentation: See https://github.com/supertokens/supertokens-core
